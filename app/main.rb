@@ -34,9 +34,11 @@ class PipeGroup
   end
 
   def colliding_with?(rect)
-    @primitives.any? do |pipe|
-      pipe.intersect_rect?(rect)
-    end
+    @primitives.any? { |pipe| pipe.intersect_rect?(rect) }
+  end
+
+  def off_screen?
+    @primitives.first.x < -WIDTH
   end
 end
 
@@ -96,6 +98,7 @@ class FlappyBirdGame
     spawn_pipes if @pipe_spawn_timer == 0
     @pipe_spawn_timer -= 1
     @pipe_groups.each(&:advance)
+    @pipe_groups.reject!(&:off_screen?)
   end
 
   def spawn_pipes
