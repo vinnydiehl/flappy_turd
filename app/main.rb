@@ -40,6 +40,18 @@ class PipeGroup
   def off_screen?
     @primitives.first.x < -WIDTH
   end
+
+  def cleared?(x)
+    @primitives.first.x < x - WIDTH
+  end
+
+  def counted?
+    @counted
+  end
+
+  def count
+    @counted = true
+  end
 end
 
 class FlappyBirdGame
@@ -69,6 +81,8 @@ class FlappyBirdGame
 
     @pipe_groups = []
     spawn_pipes
+
+    @score = 0
   end
 
   def tick
@@ -76,6 +90,7 @@ class FlappyBirdGame
     handle_physics
     check_collisions
     handle_pipes
+    check_scoring
     render
   end
 
@@ -101,6 +116,15 @@ class FlappyBirdGame
     @pipe_spawn_timer -= 1
     @pipe_groups.each(&:advance)
     @pipe_groups.reject!(&:off_screen?)
+  end
+
+  def check_scoring
+    @pipe_groups.each do |pipe_group|
+      if !pipe_group.counted? && pipe_group.cleared?(@player.x)
+        @score += 1
+        pipe_group.count
+      end
+    end
   end
 
   def render
