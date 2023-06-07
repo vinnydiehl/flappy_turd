@@ -9,7 +9,7 @@ class FlappyBirdGame
     @screen_height = args.grid.h
 
     @player = {
-      x: 50,
+      x: @screen_width / 4,
       y: (@screen_height / 2) - (PLAYER_SIZE / 2),
       w: PLAYER_SIZE,
       h: PLAYER_SIZE,
