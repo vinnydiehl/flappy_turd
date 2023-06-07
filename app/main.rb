@@ -4,6 +4,7 @@ class PipeGroup
   SPEED = 2
   WIDTH = 80
   GAP = 150
+  MAX_OFFSET = 500
 
   DELAY = 3 # seconds
 
@@ -15,9 +16,11 @@ class PipeGroup
     @screen_width = args.grid.w
     @screen_height = args.grid.h
 
+    offset = rand(MAX_OFFSET) - (MAX_OFFSET / 2)
+
     @primitives = [(@screen_height + GAP) / 2, -(@screen_height + GAP) / 2].map do |y|
       {
-        x: @screen_width, y: y,
+        x: @screen_width, y: y + offset,
         w: WIDTH,
         h: @screen_height,
         r: 34, g: 140, b: 34,
