@@ -35,10 +35,13 @@ end
 
 class FlappyBirdGame
   PLAYER_SIZE = 40
+  GRAVITY = 0.2
 
   def initialize(args)
     @args = args
     @primitives = args.outputs.primitives
+    @keyboard = args.inputs.keyboard.key_down
+    @controller = args.inputs.controller_one.key_down
 
     @screen_width = args.grid.w
     @screen_height = args.grid.h
@@ -49,7 +52,10 @@ class FlappyBirdGame
       w: PLAYER_SIZE,
       h: PLAYER_SIZE,
       path: "sprites/circle/orange.png",
-      primitive_marker: :sprite
+      primitive_marker: :sprite,
+
+      # Acceleration
+      dy: 0
     }
 
     @pipe_groups = []
@@ -57,8 +63,21 @@ class FlappyBirdGame
   end
 
   def tick
+    handle_input
+    handle_physics
     handle_pipes
     render
+  end
+
+  def handle_input
+    # if @keyboard.space || @controller.a
+    #
+    # end
+  end
+
+  def handle_physics
+    @player.dy -= GRAVITY
+    @player.y += @player.dy
   end
 
   def handle_pipes
