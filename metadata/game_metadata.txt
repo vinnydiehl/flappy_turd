@@ -1,7 +1,6 @@
-# Remove the pound sign and leading space for the properties below before publishing your game.
-devid=myname
-devtitle=My Name
-gameid=mygame
+devid=vinnydiehl
+devtitle=Vinny Diehl
+gameid=flappybird
 gametitle=Flappy Bird
 version=0.1
 icon=metadata/icon.png

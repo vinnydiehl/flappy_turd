@@ -23,6 +23,8 @@ class FlappyBirdGame
   end
 
   def render
+    @primitives << { x: 0, y: 0, w: @screen_width, h: @screen_height,
+                     r: 135, g: 206, b: 235 }.to_solid
     @primitives << @player
   end
 end
