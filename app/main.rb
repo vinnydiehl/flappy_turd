@@ -74,11 +74,7 @@ class FlappyBirdGame
   def tick
     handle_input
     handle_physics
-
-    if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
-      $gtk.reset
-    end
-
+    check_collisions
     handle_pipes
     render
   end
@@ -94,16 +90,17 @@ class FlappyBirdGame
     @player.y += @player.dy
   end
 
+  def check_collisions
+    if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
+      $gtk.reset
+    end
+  end
+
   def handle_pipes
     spawn_pipes if @pipe_spawn_timer == 0
     @pipe_spawn_timer -= 1
     @pipe_groups.each(&:advance)
     @pipe_groups.reject!(&:off_screen?)
-  end
-
-  def spawn_pipes
-    @pipe_groups << PipeGroup.new(@args)
-    @pipe_spawn_timer = PipeGroup::DELAY * FPS
   end
 
   def render
@@ -113,6 +110,13 @@ class FlappyBirdGame
     @pipe_groups.each { |p| @primitives << p.primitives }
 
     @primitives << @player
+
+    @args.outputs.primitives << { x: 50, y: 50.from_top, text: "Score: #{@score}", size_enum: 5 }
+  end
+
+  def spawn_pipes
+    @pipe_groups << PipeGroup.new(@args)
+    @pipe_spawn_timer = PipeGroup::DELAY * FPS
   end
 end
 
