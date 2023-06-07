@@ -30,7 +30,11 @@ class PipeGroup
     @primitives.each { |p| p.x -= SPEED }
   end
 
-  def colliding_with?(rect); end
+  def colliding_with?(rect)
+    @primitives.any? do |pipe|
+      pipe.intersect_rect?(rect)
+    end
+  end
 end
 
 class FlappyBirdGame
@@ -65,14 +69,19 @@ class FlappyBirdGame
   def tick
     handle_input
     handle_physics
+
+    if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
+      $gtk.reset
+    end
+
     handle_pipes
     render
   end
 
   def handle_input
-    # if @keyboard.space || @controller.a
-    #
-    # end
+    if @keyboard.space || @controller.a
+      @player.dy = 5
+    end
   end
 
   def handle_physics
