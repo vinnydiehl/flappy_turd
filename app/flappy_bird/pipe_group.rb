@@ -27,26 +27,34 @@ class PipeGroup
     end
   end
 
+  # The pipes move to the left at a constant speed. This method advances the pipes each frame.
   def advance
     @primitives.each { |p| p.x -= SPEED }
   end
 
+  # @param rect [Hash|Array] the rectangle to check against for a collision
+  # @return [Boolean] whether or not the rectangle is in collision with either pipe
   def colliding_with?(rect)
     @primitives.any? { |pipe| pipe.intersect_rect?(rect) }
   end
 
+  # @return [Boolean] whether or not the pipes have completely exited the screen to the left
   def off_screen?
     @primitives.first.x < -WIDTH
   end
 
+  # @param x [Float] the x-coordinate of the player
+  # @return whether or not the player has cleared this obstacle
   def cleared?(x)
     @primitives.first.x < x - WIDTH
   end
 
+  # @return whether or not the player has recieved a score from this obstacle
   def counted?
     @counted
   end
 
+  # Counts this obstacle as having been passed.
   def count
     @counted = true
   end
