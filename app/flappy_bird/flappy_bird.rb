@@ -16,7 +16,7 @@ class FlappyBirdGame
       y: (@screen_height / 2) - (PLAYER_SIZE / 2),
       w: PLAYER_SIZE,
       h: PLAYER_SIZE,
-      path: "sprites/circle/orange.png",
+      path: "sprites/turd.png",
       primitive_marker: :sprite,
 
       # Velocity
