@@ -4,7 +4,7 @@ class PipeGroup
   GAP = 150
   MAX_OFFSET = 500
 
-  DELAY = 3 # seconds
+  DELAY = 3.seconds
 
   attr_reader :primitives
 

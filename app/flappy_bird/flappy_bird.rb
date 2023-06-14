@@ -1,5 +1,4 @@
 class FlappyBirdGame
-  FPS = 60
   PLAYER_SIZE = 40
   GRAVITY = 0.2
 
@@ -20,14 +19,14 @@ class FlappyBirdGame
       path: "sprites/circle/orange.png",
       primitive_marker: :sprite,
 
-      # Acceleration
+      # Velocity
       dy: 0
     }
 
     @pipe_groups = []
-    spawn_pipes
 
     @score = 0
+    @timer = 0
   end
 
   def tick
@@ -37,6 +36,8 @@ class FlappyBirdGame
     handle_pipes
     check_scoring
     render
+
+    @timer += 1
   end
 
   def handle_input
@@ -57,8 +58,7 @@ class FlappyBirdGame
   end
 
   def handle_pipes
-    spawn_pipes if @pipe_spawn_timer == 0
-    @pipe_spawn_timer -= 1
+    spawn_pipes if @timer % PipeGroup::DELAY == 0
     @pipe_groups.each(&:advance)
     @pipe_groups.reject!(&:off_screen?)
   end
@@ -90,6 +90,5 @@ class FlappyBirdGame
 
   def spawn_pipes
     @pipe_groups << PipeGroup.new(@args)
-    @pipe_spawn_timer = PipeGroup::DELAY * FPS
   end
 end
