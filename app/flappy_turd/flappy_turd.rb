@@ -53,6 +53,7 @@ class FlappyTurdGame
 
   def check_collisions
     if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
+      @audio.fart = { input: "sounds/flush.wav", looping: false }
       $gtk.reset
     end
   end
