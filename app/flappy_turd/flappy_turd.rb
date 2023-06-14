@@ -5,11 +5,14 @@ class FlappyTurdGame
   def initialize(args)
     @args = args
     @primitives = args.outputs.primitives
+    @audio = args.audio
     @keyboard = args.inputs.keyboard.key_down
     @controller = args.inputs.controller_one.key_down
 
     @screen_width = args.grid.w
     @screen_height = args.grid.h
+
+    @scene = :game
 
     @player = {
       x: @screen_width / 4,
@@ -30,6 +33,10 @@ class FlappyTurdGame
   end
 
   def tick
+    send "#{@scene}_tick"
+  end
+
+  def game_tick
     handle_input
     handle_physics
     check_collisions
@@ -40,9 +47,18 @@ class FlappyTurdGame
     @timer += 1
   end
 
+  def game_over_tick
+    $gtk.reset if @keyboard.space || @controller.a
+
+    render_background
+    @primitives << { x: @screen_width / 2, y: @screen_height / 2, text: "Get shit on :(",
+                     size_enum: 15, alignment_enum: 1, vertical_alignment_enum: 1 }
+  end
+
   def handle_input
     if @keyboard.space || @controller.a
       @player.dy = 5
+      @audio.fart = { input: "sounds/farts/fart#{rand(3)}.wav", looping: false }
     end
   end
 
@@ -53,8 +69,8 @@ class FlappyTurdGame
 
   def check_collisions
     if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
-      @audio.fart = { input: "sounds/flush.wav", looping: false }
-      $gtk.reset
+      @audio.flush = { input: "sounds/flush.wav", looping: false }
+      @scene = :game_over
     end
   end
 
@@ -71,10 +87,7 @@ class FlappyTurdGame
   end
 
   def render
-    @primitives << {
-      x: 0, y: 0, w: @screen_width, h: @screen_height,
-      r: 135, g: 206, b: 235, primitive_marker: :solid
-    }
+    render_background
 
     @pipe_groups.each { |p| @primitives << p.primitives }
 
@@ -83,6 +96,13 @@ class FlappyTurdGame
     @args.outputs.primitives << {
       x: 50, y: 50.from_top,
       text: "Score: #{@score}", size_enum: 5
+    }
+  end
+
+  def render_background
+    @primitives << {
+      x: 0, y: 0, w: @screen_width, h: @screen_height,
+      r: 135, g: 206, b: 235, primitive_marker: :solid
     }
   end
 
