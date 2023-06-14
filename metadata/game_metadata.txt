@@ -1,6 +1,6 @@
 devid=vinnydiehl
 devtitle=Vinny Diehl
-gameid=flappybird
-gametitle=Flappy Bird
-version=0.4
-icon=metadata/icon.png
+gameid=flappyturd
+gametitle=Flappy Turd
+version=0.5
+icon=sprites/turd.png

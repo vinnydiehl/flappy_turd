@@ -22,11 +22,10 @@ class PipeGroup
         w: WIDTH,
         h: @screen_height,
         path: "sprites/pipe.png",
+        flip_vertically: y < 0,
         primitive_marker: :sprite
       }
     end
-
-    @primitives.last.flip_vertically = true
   end
 
   # The pipes move to the left at a constant speed. This method advances the pipes each frame.
