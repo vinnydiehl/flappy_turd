@@ -65,10 +65,7 @@ class FlappyBirdGame
 
   def check_scoring
     @pipe_groups.each do |pipe_group|
-      if !pipe_group.counted? && pipe_group.cleared?(@player.x)
-        @score += 1
-        pipe_group.count
-      end
+      @score += 1 if pipe_group.cleared?(@player.x)
     end
   end
 

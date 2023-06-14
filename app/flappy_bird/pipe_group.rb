@@ -43,19 +43,14 @@ class PipeGroup
     @primitives.first.x < -WIDTH
   end
 
+  # Call to see if the player has cleared the obstacle. It will only return true one time,
+  # so you can check this every frame.
+  #
   # @param x [Float] the x-coordinate of the player
   # @return whether or not the player has cleared this obstacle
   def cleared?(x)
-    @primitives.first.x < x - WIDTH
-  end
-
-  # @return whether or not the player has recieved a score from this obstacle
-  def counted?
-    @counted
-  end
-
-  # Counts this obstacle as having been passed.
-  def count
-    @counted = true
+    if !@counted && @primitives.first.x < x - WIDTH
+      @counted = true
+    end
   end
 end
