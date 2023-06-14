@@ -1,4 +1,4 @@
-class FlappyBirdGame
+class FlappyTurdGame
   PLAYER_SIZE = 40
   GRAVITY = 0.2
 

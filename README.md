@@ -1,3 +1,3 @@
-# Flappy Bird
+# Flappy Turd 💩
 
-Do I need to put anything here? It's Flappy Bird!
+This is my shitty Flappy Bird clone
