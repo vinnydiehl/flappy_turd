@@ -20,12 +20,12 @@ class FlappyTurdGame
       w: PLAYER_SIZE,
       h: PLAYER_SIZE,
       path: "sprites/turd.png",
-      primitive_marker: :sprite,
 
       # Velocity
       dy: 0
     }
 
+    @shit_sprays = []
     @obstacles = []
 
     @score = 0
@@ -69,6 +69,7 @@ class FlappyTurdGame
     if @keyboard.space || @controller.a
       @player.dy = 5
       @audio.fart = { input: "sounds/farts/fart#{rand(3)}.wav", looping: false }
+      @shit_sprays << ShitSpray.new(@args)
     end
   end
 
@@ -98,10 +99,9 @@ class FlappyTurdGame
 
   def render
     render_background
-
     @obstacles.each { |p| @primitives << p.primitives }
-
     @primitives << @player
+    render_shit_sprays
 
     @args.outputs.primitives << {
       x: 50, y: 50.from_top,
@@ -114,6 +114,13 @@ class FlappyTurdGame
       x: 0, y: 0, w: @screen_width, h: @screen_height,
       r: 135, g: 206, b: 235, primitive_marker: :solid
     }
+  end
+
+  def render_shit_sprays
+    @shit_sprays.reject!(&:dead?)
+    @shit_sprays.each do |spray|
+      @primitives << spray.sprite(@player.x, @player.y)
+    end
   end
 
   def spawn_pipes
