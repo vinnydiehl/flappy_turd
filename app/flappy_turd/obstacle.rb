@@ -1,9 +1,15 @@
 class Obstacle
+  # Movement to the left, pixels/frame
   SPEED = 2
+
+  # Width of the pipes
   WIDTH = 80
+  # Vertical space between the pipes where you fly through
   GAP = 150
+  # Max distance that the gap can be randomly offset from the center
   MAX_OFFSET = 500
 
+  # Delay between spawns
   DELAY = 3.seconds
 
   attr_reader :primitives
@@ -29,12 +35,12 @@ class Obstacle
   end
 
   # The pipes move to the left at a constant speed. This method advances the pipes each frame.
-  def advance
+  def move
     @primitives.each { |p| p.x -= SPEED }
   end
 
   # @param rect [Hash|Array] the rectangle to check against for a collision
-  # @return [Boolean] whether or not the rectangle is in collision with either pipe
+  # @return [Boolean] whether or not `rect` is in collision with either pipe
   def colliding_with?(rect)
     @primitives.any? { |pipe| pipe.intersect_rect?(rect) }
   end

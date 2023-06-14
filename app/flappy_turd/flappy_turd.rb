@@ -76,7 +76,7 @@ class FlappyTurdGame
 
   def handle_pipes
     spawn_pipes if @timer % Obstacle::DELAY == 0
-    @obstacles.each(&:advance)
+    @obstacles.each(&:move)
     @obstacles.reject!(&:off_screen?)
   end
 
