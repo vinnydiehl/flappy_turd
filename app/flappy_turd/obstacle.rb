@@ -1,4 +1,4 @@
-class PipeGroup
+class Obstacle
   SPEED = 2
   WIDTH = 80
   GAP = 150

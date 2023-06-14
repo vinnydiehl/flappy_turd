@@ -26,7 +26,7 @@ class FlappyTurdGame
       dy: 0
     }
 
-    @pipe_groups = []
+    @obstacles = []
 
     @score = 0
     @timer = 0
@@ -68,20 +68,20 @@ class FlappyTurdGame
   end
 
   def check_collisions
-    if @player.y <= -PLAYER_SIZE || @pipe_groups.any? { |p| p.colliding_with?(@player) }
+    if @player.y <= -PLAYER_SIZE || @obstacles.any? { |p| p.colliding_with?(@player) }
       @audio.flush = { input: "sounds/flush.wav", looping: false }
       @scene = :game_over
     end
   end
 
   def handle_pipes
-    spawn_pipes if @timer % PipeGroup::DELAY == 0
-    @pipe_groups.each(&:advance)
-    @pipe_groups.reject!(&:off_screen?)
+    spawn_pipes if @timer % Obstacle::DELAY == 0
+    @obstacles.each(&:advance)
+    @obstacles.reject!(&:off_screen?)
   end
 
   def check_scoring
-    @pipe_groups.each do |pipe_group|
+    @obstacles.each do |pipe_group|
       @score += 1 if pipe_group.cleared?(@player.x)
     end
   end
@@ -89,7 +89,7 @@ class FlappyTurdGame
   def render
     render_background
 
-    @pipe_groups.each { |p| @primitives << p.primitives }
+    @obstacles.each { |p| @primitives << p.primitives }
 
     @primitives << @player
 
@@ -107,6 +107,6 @@ class FlappyTurdGame
   end
 
   def spawn_pipes
-    @pipe_groups << PipeGroup.new(@args)
+    @obstacles << Obstacle.new(@args)
   end
 end
