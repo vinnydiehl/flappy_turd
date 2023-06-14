@@ -48,11 +48,21 @@ class FlappyTurdGame
   end
 
   def game_over_tick
-    $gtk.reset if @keyboard.space || @controller.a
+    # Quick & dirty timeout so A button spam doesn't skip the game over screen
+    @game_over_timeout = !@game_over_timeout ? 0.5.seconds : @game_over_timeout - 1
+    $gtk.reset if @game_over_timeout < 0 && (@keyboard.space || @controller.a)
 
     render_background
-    @primitives << { x: @screen_width / 2, y: @screen_height / 2, text: "Get shit on :(",
-                     size_enum: 15, alignment_enum: 1, vertical_alignment_enum: 1 }
+    @primitives << ["Get shit on :(", "Score: #{@score}"].each_with_index.map do |text, i|
+      {
+        x: @screen_width / 2,
+        y: @screen_height / 2 + 50 - (60 * i),
+        text: text,
+        size_enum: 15 / (i + 1),
+        alignment_enum: 1,
+        vertical_alignment_enum: 1
+      }
+    end
   end
 
   def handle_input
