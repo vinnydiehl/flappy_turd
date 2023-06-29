@@ -2,5 +2,5 @@ devid=vinnydiehl
 devtitle=Vinny Diehl
 gameid=flappyturd
 gametitle=Flappy Turd
-version=0.5
+version=0.6
 icon=sprites/turd.png
